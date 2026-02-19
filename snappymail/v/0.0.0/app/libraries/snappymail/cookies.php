@@ -63,11 +63,6 @@ class Cookies
 	{
 		$sPath = static::$DefaultPath;
 		$sPath = $sPath && \strlen($sPath) ? $sPath : '/';
-/*
-		if (\strlen($sValue) > 4000 - \strlen($sPath . $sName)) {
-			throw new \Exception("Cookie '{$sName}' value too long");
-		}
-*/
 		if (\strlen($sValue)) {
 			$_COOKIE[$sName] = $sValue;
 		} else {
@@ -102,7 +97,6 @@ class Cookies
 		return \setcookie($sName, $sValue, array(
 			'expires' => $iExpire,
 			'path' => $sPath,
-//			'domain' => null,
 			'secure' => static::$Secure,
 			'httponly' => $httponly,
 			'samesite' => static::$SameSite
@@ -121,11 +115,6 @@ class Cookies
 		// https://github.com/the-djmaze/snappymail/issues/451
 		// The 4K browser limit is for the entire cookie, including name, value, expiry date etc.
 		$iMaxSize = 4000 - \strlen($sPath . $sName);
-/*
-		if ($iMaxSize < \strlen($sValue)) {
-			throw new \Exception("Cookie '{$sName}' value too long");
-		}
-*/
 		// Set the new 4K split cookie
 		foreach (\str_split($sValue, $iMaxSize) as $i => $sPart) {
 			$sCookieName = $i ? "{$sName}~{$i}" : $sName;

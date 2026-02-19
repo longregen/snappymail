@@ -143,7 +143,7 @@ abstract class Upgrade
 	{
 		$sData = \MailSo\Base\Utils::UrlSafeBase64Decode($sData);
 		if (!\strlen($sData)) {
-			return '';
+			return array();
 		}
 		$sKey = \md5(APP_SALT);
 		$sData = \is_callable('xxtea_decrypt')
@@ -152,13 +152,12 @@ abstract class Upgrade
 		try {
 			return \json_decode($sData, true, 512, JSON_THROW_ON_ERROR) ?: array();
 		} catch (\Throwable $e) {
-			return \unserialize($sData) ?: array();
+			return \unserialize($sData, ['allowed_classes' => false]) ?: array();
 		}
 	}
 
 	public static function backup() : string
 	{
-//		$tar_destination = APP_DATA_FOLDER_PATH . APP_VERSION . '.tar';
 		$tar_destination = APP_DATA_FOLDER_PATH . 'backup-' . \date('YmdHis');
 		if (\class_exists('PharData')) {
 			$tar_destination .= '.tar';

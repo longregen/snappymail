@@ -15,7 +15,6 @@ import { FileInfo, RFC822 } from 'Common/File';
 import { AttachmentCollectionModel } from 'Model/AttachmentCollection';
 import { EmailCollectionModel } from 'Model/EmailCollection';
 import { MimeHeaderCollectionModel } from 'Model/MimeHeaderCollection';
-//import { MimeHeaderAutocryptModel } from 'Model/MimeHeaderAutocrypt';
 import { AbstractModel } from 'Knoin/AbstractModel';
 
 import { LanguageStore } from 'Stores/Language';

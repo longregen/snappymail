@@ -68,7 +68,6 @@ loadAccountsAndIdentities = () => {
  * @returns {boolean}
  */
 download = (link, name = "") => {
-	console.log('download: '+link);
 	// Firefox 98 issue https://github.com/the-djmaze/snappymail/issues/301
 	if (ThemeStore.isMobile() || /firefox/i.test(navigator.userAgent)) {
 		open(link, '_blank');
@@ -96,7 +95,6 @@ downloadZip = (name, hashes, onError, fTrigger, folder) => {
 		}
 		if (folder) {
 			params.folder = folder;
-//			params.uids = uids;
 		}
 		Remote.post('AttachmentsActions', fTrigger || null, params)
 		.then(result => {
@@ -231,7 +229,6 @@ setLayoutResizer = (source, sClientSideKeyName, mode) =>
 		source.removeAttribute('style');
 	}
 	source.observer?.disconnect();
-//	source.classList.toggle('resizable', mode);
 	if (mode) {
 		const length = Local.get(sClientSideKeyName + mode) || SettingsGet('Resizer' + sClientSideKeyName + mode);
 		if (length) {

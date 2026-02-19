@@ -55,6 +55,11 @@ abstract class DateTimeHelper
 			// Using T (obsolete timezone abbreviation)
 			?: \DateTime::createFromFormat('d M Y H:i:s T', $sDateTime, static::GetUtcTimeZoneObject());
 
+		if (!$oDateTime) {
+			\SnappyMail\Log::notice('', "Failed to parse RFC 2822 date '{$sDateTime}'");
+			return 0;
+		}
+
 		try {
 			$timestamp = $oDateTime->getTimestamp();
 

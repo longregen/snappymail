@@ -8,7 +8,7 @@ abstract class JWT
 {
 	private static function jsonEncode($data)
 	{
-		return Utils::UrlSafeBase64Encode(\json_encode($payload, JSON_THROW_ON_ERROR));
+		return Utils::UrlSafeBase64Encode(\json_encode($data, JSON_THROW_ON_ERROR));
 	}
 
 	private static function jsonDecode($data)
@@ -132,8 +132,7 @@ abstract class JWT
 			case 'RS256':
 			case 'RS384':
 			case 'RS512':
-				$free_key = !\is_resource($key);
-				if ($free_key) {
+				if (!\is_resource($key)) {
 					$key = \openssl_pkey_get_private($key, $passphrase);
 					if (!$key) {
 						throw new \ValueError('Invalid key, reason: ' . \openssl_error_string());
@@ -180,11 +179,10 @@ abstract class JWT
 			case 'RS256':
 			case 'RS384':
 			case 'RS512':
-				$free_key = !\is_resource($key);
-				if ($free_key) {
+				if (!\is_resource($key)) {
 					$key = \openssl_pkey_get_public($key);
 					if (!$key) {
-						throw new \ValueError('Invalid key, reason: ' . openssl_error_string());
+						throw new \ValueError('Invalid key, reason: ' . \openssl_error_string());
 					}
 				}
 				$details = \openssl_pkey_get_details($key);
@@ -192,10 +190,10 @@ abstract class JWT
 					throw new \ValueError('Key is not compatible with RSA signatures');
 				}
 				$success = \openssl_verify($msg, $signature, $key, 'SHA'.\substr($alg,2));
-				if (-1 == $success) {
+				if (-1 === $success) {
 					throw new \DomainException('OpenSSL unable to verify data: ' . \openssl_error_string());
 				}
-				return $success;
+				return 1 === $success;
 
 			case 'HS256':
 			case 'HS512':
@@ -205,10 +203,6 @@ abstract class JWT
 					return \hash_equals($signature, \hash_hmac($algo, $msg, $key, true));
 				}
 
-			// Ecdsa
-//			case 'ES256':
-//			case 'ES384':
-//			case 'ES512':
 			default:
 				throw new \ValueError("Algorithm '{$alg}' not supported");
 		}

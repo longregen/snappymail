@@ -18,11 +18,6 @@ export const
 
 	// unescape(encodeURIComponent()) makes the UTF-16 DOMString to an UTF-8 string
 	b64Encode = data => btoa(unescape(encodeURIComponent(data))),
-/* 	// Without deprecated 'unescape':
-	b64Encode = data => btoa(encodeURIComponent(data).replace(
-		/%([0-9A-F]{2})/g, (match, p1) => String.fromCharCode('0x' + p1)
-	)),
-*/
 
 	b64EncodeJSON = data => b64Encode(JSON.stringify(data)),
 
