@@ -88,7 +88,7 @@ class Xxtea
 		return self::long2str($aV, true);
 	}
 
-	private static function long2str(array $aV, bool $aW) : string
+	private static function long2str(array $aV, bool $aW) : string|false
 	{
 		$iLen = \count($aV);
 		$iN = ($iLen - 1) << 2;
@@ -106,7 +106,7 @@ class Xxtea
 		return $aW ? \substr(\join('', $aS), 0, $iN) : \join('', $aS);
 	}
 
-	private static function str2long(string $sS, string $sW) : array
+	private static function str2long(string $sS, bool $sW) : array
 	{
 		$aV = \unpack('V*', $sS . \str_repeat("\0", (4 - \strlen($sS) % 4) & 3));
 		$aV = \array_values($aV);

@@ -109,25 +109,6 @@ abstract class Utils
 			if (isset(static::$RenameEncoding[$sFromEncoding])) {
 				$sFromEncoding = static::$RenameEncoding[$sFromEncoding];
 			}
-/*
-			if ('UTF-8' === $sFromEncoding && $sToEncoding === 'UTF7-IMAP' && \is_callable('imap_utf8_to_mutf7')) {
-				$sResult = \imap_utf8_to_mutf7($sInputString);
-				if (false !== $sResult) {
-					return $sResult;
-				}
-			}
-
-			if ('BASE64' === $sFromEncoding) {
-				static::Base64Decode($sFromEncoding);
-				$sFromEncoding = null;
-			} else if ('UUENCODE' === $sFromEncoding) {
-				\convert_uudecode($sFromEncoding);
-				$sFromEncoding = null;
-			} else if ('QUOTED-PRINTABLE' === $sFromEncoding) {
-				\quoted_printable_decode($sFromEncoding);
-				$sFromEncoding = null;
-			} else
-*/
 			if (!static::MbSupportedEncoding($sFromEncoding)) {
 				if (\function_exists('iconv')) {
 					$sResult = \iconv($sFromEncoding, "{$sToEncoding}//IGNORE", $sInputString);
@@ -241,6 +222,7 @@ abstract class Utils
 		$aParts = array();
 
 		$sMainCharset = '';
+		$sCharset = '';
 		$bOneCharset = true;
 
 		for ($iIndex = 0, $iLen = \count($aEncodeArray); $iIndex < $iLen; ++$iIndex) {
@@ -698,8 +680,8 @@ abstract class Utils
 		\SnappyMail\Log::warning('MailSo', "Deprecated function IdnToUtf8 called at {$trace['file']}#{$trace['line']}");
 		if (\preg_match('/(^|\.|@)xn--/i', $sStr)) {
 			$sStr = \str_contains($sStr, '@')
-			? \SnappyMail\IDN::emailToUtf8($string)
-			: \idn_to_utf8($string);
+			? \SnappyMail\IDN::emailToUtf8($sStr)
+			: \idn_to_utf8($sStr);
 		}
 		return $sStr;
 	}
@@ -714,7 +696,7 @@ abstract class Utils
 		$aParts = \explode('@', $sStr);
 		$sDomain = \array_pop($aParts);
 		if (\preg_match('/[^\x20-\x7E]/', $sDomain)) {
-			$sDomain = \idn_to_ascii($string);
+			$sDomain = \idn_to_ascii($sDomain);
 		}
 		if ($bLowerCase) {
 			$sDomain = \strtolower($sDomain);

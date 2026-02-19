@@ -135,7 +135,7 @@ class Utils
 		return self::WebVersionPath() . 'static/' . $path;
 	}
 
-	public static function inOpenBasedir(string $name) : string
+	public static function inOpenBasedir(string $name) : bool
 	{
 		static $open_basedir;
 		if (null === $open_basedir) {
@@ -147,7 +147,6 @@ class Utils
 					return true;
 				}
 			}
-//			\SnappyMail\Log::warning('OpenBasedir', "open_basedir restriction in effect. {$name} is not within the allowed path(s): " . \ini_get('open_basedir'));
 			return false;
 		}
 		return true;

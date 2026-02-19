@@ -17,7 +17,7 @@ abstract class TOTP
 			$counter = \str_pad(\pack('N*', $timeSlice + $i), 8, "\x00", STR_PAD_LEFT);
 			// Hash it with users secret key
 			$hm = \hash_hmac($algo, $counter, $key, true);
-			// Unpak 4 bytes of the result, use last nipple of result as index/offset
+			// Unpack 4 bytes of the result, use last nibble of result as index/offset
 			$value = \unpack('N', \substr($hm, (\ord(\substr($hm, -1)) & 0x0F), 4));
 			// Only 32 bits
 			$value = $value[1] & 0x7FFFFFFF;

@@ -52,7 +52,6 @@ export class AdminSettingsSecurity extends AbstractViewSettings {
 				if (/[A-Z2-7]{16,}/.test(value) && 0 == value.length * 5 % 8) {
 					Remote.request('AdminQRCode', (iError, data) => {
 						if (!iError) {
-							console.dir({data:data});
 							this.viewQRCode(data.Result);
 						}
 					}, {
