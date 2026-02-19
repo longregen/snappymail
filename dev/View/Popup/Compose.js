@@ -551,7 +551,7 @@ export class ComposePopupView extends AbstractViewPopup {
 											'reply': '\\answered',
 											'forward': '$forwarded'
 										}[this.aDraftInfo[0]];
-										if (flag) {
+										if (flag && oLastMessage) {
 											const aFlags = oLastMessage.flags();
 											if (aFlags.indexOf(flag) === -1) {
 												aFlags.push(flag);
@@ -1324,11 +1324,11 @@ export class ComposePopupView extends AbstractViewPopup {
 			: !this.attachments.some(item => item?.complete());
 
 		return (
-			!this.to.length &&
-			!this.cc.length &&
-			!this.bcc.length &&
-			!this.replyTo.length &&
-			!this.subject.length &&
+			!this.to().length &&
+			!this.cc().length &&
+			!this.bcc().length &&
+			!this.replyTo().length &&
+			!this.subject().length &&
 			withoutAttachment &&
 			(!this.oEditor || !this.oEditor.getData())
 		);
@@ -1415,7 +1415,6 @@ export class ComposePopupView extends AbstractViewPopup {
 		key && options.push(['GnuPG', key]);
 		identity.smimeKeyValid() && identity.smimeCertificateValid() && identity.email === email
 			&& options.push(['S/MIME']);
-		console.dir({signOptions: options});
 		this.signOptions(options);
 	}
 
@@ -1444,11 +1443,9 @@ export class ComposePopupView extends AbstractViewPopup {
 				options.push('Mailvelope');
 			} else {
 				'mailvelope' === this.viewArea() && this.bodyArea();
-//				this.dropMailvelope();
 			}
 		}
 
-		console.dir({encryptOptions:options});
 		this.encryptOptions(options);
 	}
 
@@ -1542,12 +1539,7 @@ export class ComposePopupView extends AbstractViewPopup {
 			params.encrypted = draft
 				? await this.mailvelope.createDraft()
 				: await this.mailvelope.encrypt(recipients);
-/*
-			Object.entries(PgpUserStore.getPublicKeyOfEmails(recipients) || {}).forEach(([k,v]) =>
-				params.autocrypt.push({addr:k, keydata:v.replace(/-----(BEGIN|END) PGP PUBLIC KEY BLOCK-----/g).trim()})
-			);
-*/
-		} else if (signOptions.length || encryptOptions.length) {
+		} else if (signOptions?.length || encryptOptions?.length) {
 			if (!draft && !hasAttachments && !Text.length) {
 				throw i18n('COMPOSE/ERROR_EMPTY_BODY');
 			}

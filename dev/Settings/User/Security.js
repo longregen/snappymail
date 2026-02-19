@@ -75,12 +75,6 @@ export class UserSettingsSecurity extends AbstractViewSettings {
 		 * Create an iframe to display the Mailvelope keyring settings.
 		 * The iframe will be injected into the container identified by selector.
 		 */
-		window.mailvelope && mailvelope.createSettingsContainer('#mailvelope-settings'/*[, keyring], options*/);
-		/**
-		 * https://github.com/the-djmaze/snappymail/issues/973
-		Remote.request('GetStoredPGPKeys', (iError, data) => {
-			console.dir([iError, data]);
-		});
-		*/
+		window.mailvelope && mailvelope.createSettingsContainer('#mailvelope-settings');
 	}
 }

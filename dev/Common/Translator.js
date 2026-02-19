@@ -2,8 +2,7 @@ import ko from 'ko';
 import { Notifications, UploadErrorCode } from 'Common/Enums';
 import { langLink } from 'Common/Links';
 import { doc, createElement } from 'Common/Globals';
-import { getKeyByValue, forEachObjectEntry } from 'Common/Utils';
-import { pInt } from 'Common/Utils';
+import { getKeyByValue, forEachObjectEntry, pInt } from 'Common/Utils';
 import { LanguageStore } from 'Stores/Language';
 
 let I18N_DATA = {};

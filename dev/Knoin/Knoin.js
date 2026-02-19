@@ -224,7 +224,6 @@ export const
 	showScreenPopup = (ViewModelClassToShow, params = []) => {
 		const vm = buildViewModel(ViewModelClassToShow);
 		if (vm) {
-			params = params || [];
 			vm.beforeShow?.(...params);
 			vm.modalVisible(true);
 			vm.onShow?.(...params);

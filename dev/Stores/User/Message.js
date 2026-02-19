@@ -23,7 +23,7 @@ export const MessageUserStore = new class {
 		addSubscribablesTo(this, {
 			message: message => {
 				clearTimeout(this.MessageSeenTimer);
-				elementById('rl-right').classList.toggle('message-selected', !!message);
+				elementById('rl-right')?.classList.toggle('message-selected', !!message);
 				if (message) {
 					SettingsUserStore.usePreviewPane() || AppUserStore.focusedState(ScopeMessageView);
 				} else {

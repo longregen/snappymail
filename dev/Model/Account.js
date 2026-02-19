@@ -43,22 +43,4 @@ export class AccountModel extends AbstractModel {
 		});
 	}
 
-	/**
-	 * Imports all mail to main account
-	 *//*
-	importAll(account) {
-		Remote.streamPerLine(line => {
-			try {
-				line = JSON.parse(line);
-				console.dir(line);
-			} catch (e) {
-				// OOPS
-			}
-		}, 'AccountImport', {
-			Action: 'AccountImport',
-			email: account.email
-		});
-	}
-	*/
-
 }

@@ -144,12 +144,5 @@ export class SieveScriptPopupView extends rl.pluginPopupView {
 		this.rawActive(!oScript.allowFilters());
 		this.saveError(false);
 		this.errorText('');
-
-/*
-		// TODO: Sieve GUI
-		let tree = parseScript(oScript.body(), oScript.name());
-		console.dir(tree);
-		console.log(tree.join('\r\n'));
-*/
 	}
 }
