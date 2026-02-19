@@ -25,7 +25,7 @@ class LoginExternalSsoPlugin extends \RainLoop\Plugins\AbstractPlugin
 		$sKey = $this->Config()->Get('plugin', 'key', '');
 		$sEmail = isset($_POST['Email']) ? $_POST['Email'] : '';
 		$sPassword = isset($_POST['Password']) ? $_POST['Password'] : '';
-		if ($sEmail && $sPassword && $sKey && isset($_POST['SsoKey']) && $_POST['SsoKey'] == $sKey) {
+		if ($sEmail && $sPassword && $sKey && isset($_POST['SsoKey']) && $_POST['SsoKey'] === $sKey) {
 			$sResult = \RainLoop\Api::CreateUserSsoHash($sEmail, $sPassword);
 			if (isset($_POST['Output']) && 'json' === \strtolower($_POST['Output'])) {
 				\header('Content-Type: application/json; charset=utf-8');

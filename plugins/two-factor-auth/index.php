@@ -39,7 +39,6 @@ class TwoFactorAuthPlugin extends \RainLoop\Plugins\AbstractPlugin
 	{
 		return [
 			\RainLoop\Plugins\Property::NewInstance("force_two_factor_auth")
-//				->SetLabel('PLUGIN_TWO_FACTOR/LABEL_FORCE')
 				->SetLabel('Enforce 2-Step Verification')
 				->SetType(\RainLoop\Enumerations\PluginPropertyType::BOOL),
 		];
@@ -47,7 +46,7 @@ class TwoFactorAuthPlugin extends \RainLoop\Plugins\AbstractPlugin
 
 	public function FilterAppData($bAdmin, &$aResult)
 	{
-		if (!$bAdmin && \is_array($aResult)/* && isset($aResult['Auth']) && !$aResult['Auth']*/) {
+		if (!$bAdmin && \is_array($aResult)) {
 			$aResult['RequireTwoFactor'] = (bool) $this->Config()->Get('plugin', 'force_two_factor_auth', false);
 
 			$aResult['SetupTwoFactor'] = false;
@@ -131,9 +130,7 @@ class TwoFactorAuthPlugin extends \RainLoop\Plugins\AbstractPlugin
 	private static function getQRCode(MainAccount $oAccount, string $secret) : string
 	{
 		$email = \rawurlencode($oAccount->Email());
-//		$issuer = \rawurlencode(\RainLoop\API::Config()->Get('webmail', 'title', 'SnappyMail'));
 		$QR = \SnappyMail\QRCode::getMinimumQRCode(
-//			"otpauth://totp/{$issuer}:{$email}?secret={$secret}&issuer={$issuer}",
 			"otpauth://totp/{$email}?secret={$secret}",
 			\SnappyMail\QRCode::ERROR_CORRECT_LEVEL_M
 		);
@@ -334,7 +331,7 @@ class TwoFactorAuthPlugin extends \RainLoop\Plugins\AbstractPlugin
 		if (!\str_contains($sData, 'User')) {
 			$sData = \MailSo\Base\Utils::UrlSafeBase64Decode($sData);
 			if (!\strlen($sData)) {
-				return '';
+				return array();
 			}
 			$sKey = \md5(APP_SALT);
 			$sData = \is_callable('xxtea_decrypt')
@@ -344,7 +341,7 @@ class TwoFactorAuthPlugin extends \RainLoop\Plugins\AbstractPlugin
 		try {
 			return \json_decode($sData, true, 512, JSON_THROW_ON_ERROR) ?: array();
 		} catch (\Throwable $e) {
-			return \unserialize($sData) ?: array();
+			return \unserialize($sData, ['allowed_classes' => false]) ?: array();
 		}
 	}
 }
