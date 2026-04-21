@@ -115,7 +115,7 @@ class Http
 		if (!\strlen($sHost)) {
 			$sName = static::GetServer('SERVER_NAME', '');
 			$iPort = (int) static::GetServer('SERVER_PORT', 80);
-			$sHost = (\in_array($iPort, array(80, 433))) ? $sName : $sName.':'.$iPort;
+			$sHost = (\in_array($iPort, array(80, 443))) ? $sName : $sName.':'.$iPort;
 		}
 
 		if ($bWithoutWWW && \str_starts_with($sHost, 'www.')) {

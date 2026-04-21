@@ -29,7 +29,7 @@ class ProxyAuthPlugin extends \RainLoop\Plugins\AbstractPlugin
  	 * @return boolean true if the ip is in this range / false if not.
  	 */
 	private function ip_in_range( $ip, $range ) {
-		if ( strpos( $range, '/' ) == false ) {
+		if ( strpos( $range, '/' ) === false ) {
 			$range .= '/32';
 		}
 		// $range is in IP/CIDR format eg 127.0.0.1/24
@@ -84,7 +84,7 @@ class ProxyAuthPlugin extends \RainLoop\Plugins\AbstractPlugin
 		$sMsg = "ProxyIP: " . $sProxyIP;
 		$oLogger->Write($sMsg, $sLevel, $sPrefix);
 
-		$sProxyCheck = $this->Config()->getDecrypted('plugin', 'proxy_check', '');
+		$sProxyCheck = $this->Config()->getDecrypted('plugin', 'check_proxy', '');
 		$sClientIPs = $this->Manager()->Actions()->Http()->GetClientIP(true);
 
 		/* make sure that remote user is only set by authorized proxy to avoid security risks */

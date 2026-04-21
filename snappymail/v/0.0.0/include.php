@@ -30,7 +30,6 @@ if (!defined('APP_INDEX_ROOT_PATH')) {
 // revoke permissions
 umask(0077);
 
-ini_set('register_globals', '0');
 ini_set('xdebug.max_nesting_level', '500');
 
 define('APP_VERSION_ROOT_PATH', __DIR__ . DIRECTORY_SEPARATOR);
@@ -66,8 +65,6 @@ if (!defined('APP_CONFIGURATION_NAME')) {
 }
 unset($sCustomConfiguration);
 
-//$sData = is_file(APP_DATA_FOLDER_PATH.'DATA.php') ? file_get_contents(APP_DATA_FOLDER_PATH.'DATA.php') : '';
-//define('APP_PRIVATE_DATA', APP_DATA_FOLDER_PATH.'_data_'.($sData ? md5($sData) : '').'/'.APP_PRIVATE_DATA_NAME.'/');
 define('APP_PRIVATE_DATA', APP_DATA_FOLDER_PATH.'_data_/'.APP_PRIVATE_DATA_NAME.'/');
 define('APP_PLUGINS_PATH', APP_PRIVATE_DATA.'plugins/');
 
@@ -87,7 +84,6 @@ if (!defined('SNAPPYMAIL_LIBRARIES_PATH')) {
 	/** case-sensitive autoloader */
 	spl_autoload_register(function($sClassName){
 		$file = SNAPPYMAIL_LIBRARIES_PATH . strtr($sClassName, '\\', DIRECTORY_SEPARATOR) . '.php';
-//		if ($file = stream_resolve_include_path(strtr($sClassName, '\\', DIRECTORY_SEPARATOR) . '.php')) {
 		if (is_file($file)) {
 			include_once $file;
 		}
@@ -112,7 +108,7 @@ if (!$sSalt) {
 }
 define('APP_SALT', md5($sSalt.APP_PRIVATE_DATA_NAME.$sSalt));
 
-unset($sSalt, $sData);
+unset($sSalt);
 
 if (!isset($_SERVER['HTTP_USER_AGENT'])) {
 	$_SERVER['HTTP_USER_AGENT'] = '';

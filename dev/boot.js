@@ -21,7 +21,6 @@ const
 			script.onload = () => resolve();
 			script.onerror = () => reject('Failed loading ' + src);
 			script.src = src;
-//			script.async = true;
 			doc.head.append(script);
 		}) : Promise.reject('src is empty');
 
@@ -87,7 +86,6 @@ window.rl = {
 				});
 				if (asJSON) {
 					postData = object;
-//					postData.XToken = XToken;
 				} else {
 					XToken && postData.set('XToken', XToken);
 				}
@@ -99,7 +97,6 @@ window.rl = {
 			init.body = postData;
 		}
 		XToken && (init.headers['X-SM-Token'] = XToken);
-//		init.headers = new Headers(init.headers);
 		return fetch(resource, init);
 	},
 
@@ -112,23 +109,6 @@ window.rl = {
 				if (!ct.startsWith(mimeJSON)) {
 					return Promise.reject(new Error(`Invalid Content-Type '${ct}' for url '${resource}'`));
 				}
-				/* TODO: use this for non-developers?
-				response.clone()
-				let data = response.text();
-				try {
-					return JSON.parse(data);
-				} catch (e) {
-					console.error(e);
-//					console.log(data);
-					return Promise.reject(Notifications.JsonParse);
-					return {
-						Result: false,
-						code: 952, // Notifications.JsonParse
-						message: e.message,
-						messageAdditional: data
-					}
-				}
-				*/
 				return response.json();
 			}
 			return Promise.reject(new Error('Network response error: ' + response.status));

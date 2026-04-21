@@ -3,8 +3,8 @@ import { koComputable, addObservablesTo, addComputablesTo } from 'External/ko';
 import { SMAudio } from 'Common/Audio';
 import { Notifications } from 'Common/Enums';
 import { MessageSetAction } from 'Common/EnumsUser';
-import { $htmlCL, fireEvent } from 'Common/Globals';
-import { arrayLength, pString } from 'Common/Utils';
+import { $htmlCL, fireEvent, SettingsGet } from 'Common/Globals';
+import { arrayLength, pString, b64EncodeJSONSafe } from 'Common/Utils';
 import { UNUSED_OPTION_VALUE } from 'Common/Consts';
 
 import {
@@ -13,26 +13,20 @@ import {
 	setFolderETag
 } from 'Common/Cache';
 
-import { mailBox } from 'Common/Links';
-import { i18n, getNotification } from 'Common/Translator';
+import { mailBox, SUB_QUERY_PREFIX } from 'Common/Links';
+import { i18n, getNotification, baseCollator } from 'Common/Translator';
 
 import { EmailCollectionModel } from 'Model/EmailCollection';
 import { MessageCollectionModel } from 'Model/MessageCollection';
 
 import { AccountUserStore } from 'Stores/User/Account';
+import { AppUserStore } from 'Stores/User/App';
 import { FolderUserStore } from 'Stores/User/Folder';
 import { MessageUserStore } from 'Stores/User/Message';
 import { NotificationUserStore } from 'Stores/User/Notification';
 import { SettingsUserStore } from 'Stores/User/Settings';
 
 import Remote from 'Remote/User/Fetch';
-
-import { b64EncodeJSONSafe } from 'Common/Utils';
-import { SettingsGet } from 'Common/Globals';
-import { SUB_QUERY_PREFIX } from 'Common/Links';
-import { AppUserStore } from 'Stores/User/App';
-
-import { baseCollator } from 'Common/Translator';
 
 const
 	isChecked = item => item.checked(),

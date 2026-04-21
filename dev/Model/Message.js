@@ -15,7 +15,6 @@ import { FileInfo, RFC822 } from 'Common/File';
 import { AttachmentCollectionModel } from 'Model/AttachmentCollection';
 import { EmailCollectionModel } from 'Model/EmailCollection';
 import { MimeHeaderCollectionModel } from 'Model/MimeHeaderCollection';
-//import { MimeHeaderAutocryptModel } from 'Model/MimeHeaderAutocrypt';
 import { AbstractModel } from 'Knoin/AbstractModel';
 
 import { LanguageStore } from 'Stores/Language';
@@ -518,22 +517,6 @@ export class MessageModel extends AbstractModel {
 	}
 
 	/**
-	 * @returns {MessageModel}
-	 *//*
-	clone() {
-		let self = new MessageModel();
-		// Clone message values
-		forEachObjectEntry(this, (key, value) => {
-			if (ko.isObservable(value)) {
-				ko.isComputed(value) || self[key](value());
-			} else if (!isFunction(value)) {
-				self[key] = value;
-			}
-		});
-		self.computeSenderEmail();
-		return self;
-	}*/
-
 	showExternalImages(regex) {
 		const body = this.body;
 		if (body && this.hasImages()) {
@@ -552,7 +535,6 @@ export class MessageModel extends AbstractModel {
 				});
 				regex = regex.join('|').replace(/\|+/g, '|');
 				if (regex) {
-					console.log('whitelist images = '+regex);
 					regex = new RegExp(regex);
 					if (this.from[0]?.email.match(regex)) {
 						regex = null;
@@ -612,11 +594,6 @@ export class MessageModel extends AbstractModel {
 		}
 		return true;
 	}
-/*
-	async decrypted() {
-		return msg.pgpDecrypted() || msg.smimeDecrypted());
-	}
-*/
 	async pgpDecrypt() {
 		const oMessage = this,
 			data = oMessage.pgpEncrypted();

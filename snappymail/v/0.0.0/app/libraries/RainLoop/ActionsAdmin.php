@@ -43,25 +43,20 @@ class ActionsAdmin extends Actions
 
 	public function DoAdminSettingsUpdate() : array
 	{
-//		sleep(3);
-//		return $this->DefaultResponse(false);
-
 		$this->IsAdminLoggined();
 
 		$oConfig = $this->Config();
 
-		$self = $this;
-
-		$this->setConfigFromParams($oConfig, 'language', 'webmail', 'language', 'string', function ($sLanguage) use ($self) {
-			return $self->ValidateLanguage($sLanguage, '', false);
+		$this->setConfigFromParams($oConfig, 'language', 'webmail', 'language', 'string', function ($sLanguage) {
+			return $this->ValidateLanguage($sLanguage, '', false);
 		});
 
-		$this->setConfigFromParams($oConfig, 'languageAdmin', 'admin_panel', 'language', 'string', function ($sLanguage) use ($self) {
-			return $self->ValidateLanguage($sLanguage, '', true);
+		$this->setConfigFromParams($oConfig, 'languageAdmin', 'admin_panel', 'language', 'string', function ($sLanguage) {
+			return $this->ValidateLanguage($sLanguage, '', true);
 		});
 
-		$this->setConfigFromParams($oConfig, 'Theme', 'webmail', 'theme', 'string', function ($sTheme) use ($self) {
-			return $self->ValidateTheme($sTheme);
+		$this->setConfigFromParams($oConfig, 'Theme', 'webmail', 'theme', 'string', function ($sTheme) {
+			return $this->ValidateTheme($sTheme);
 		});
 
 		$this->setConfigFromParams($oConfig, 'proxyExternalImages', 'labs', 'use_local_proxy_for_external_images', 'bool');
@@ -224,6 +219,7 @@ class ActionsAdmin extends Actions
 			\header('Content-Length: ' . \filesize($file));
 			$fp = \fopen($file, 'rb');
 			\fpassthru($fp);
+			\fclose($fp);
 			\unlink($file);
 		} catch (\Throwable $e) {
 			if (102 == $e->getCode()) {
@@ -438,9 +434,8 @@ class ActionsAdmin extends Actions
 
 			$aResult['contactsEnable'] = (bool)$oConfig->Get('contacts', 'enable', false);
 			$aResult['contactsSync'] = (bool)$oConfig->Get('contacts', 'allow_sync', false);
-			$aResult['contactsPdoType'] = Providers\AddressBook\PdoAddressBook::validPdoType($oConfig->Get('contacts', 'type', 'sqlite'));
-			$aResult['contactsPdoDsn'] = (string)$oConfig->Get('contacts', 'pdo_dsn', '');
 			$aResult['contactsPdoType'] = (string)$oConfig->Get('contacts', 'type', '');
+			$aResult['contactsPdoDsn'] = (string)$oConfig->Get('contacts', 'pdo_dsn', '');
 			$aResult['contactsPdoUser'] = (string)$oConfig->Get('contacts', 'pdo_user', '');
 			$aResult['contactsPdoPassword'] = static::APP_DUMMY;
 			$aResult['contactsMySQLSSLCA'] = (string) $oConfig->Get('contacts', 'mysql_ssl_ca', '');

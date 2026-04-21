@@ -23,7 +23,7 @@ export const MessageUserStore = new class {
 		addSubscribablesTo(this, {
 			message: message => {
 				clearTimeout(this.MessageSeenTimer);
-				elementById('rl-right').classList.toggle('message-selected', !!message);
+				elementById('rl-right')?.classList.toggle('message-selected', !!message);
 				if (message) {
 					SettingsUserStore.usePreviewPane() || AppUserStore.focusedState(ScopeMessageView);
 				} else {
@@ -41,9 +41,10 @@ export const MessageUserStore = new class {
 		const children = this.bodiesDom()?.children || [];
 		let i = Math.max(0, children.length - (all ? 0 : 15));
 		while (i--) {
-			children[i].remove();
-			if (children[i].message) {
-				children[i].message.body = null;
+			const el = children[i];
+			el.remove();
+			if (el.message) {
+				el.message.body = null;
 			}
 		}
 	}

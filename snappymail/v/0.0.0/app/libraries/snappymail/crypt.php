@@ -51,7 +51,6 @@ abstract class Crypt
 		if (!$key) {
 			if (empty($_COOKIE['smctoken'])) {
 				\SnappyMail\Cookies::set('smctoken', \base64_encode(\random_bytes(16)), 0, false);
-//				throw new \RuntimeException('Missing smctoken');
 			}
 			$key = $_COOKIE['smctoken'] . APP_VERSION;
 		}
@@ -102,10 +101,6 @@ abstract class Crypt
 	) /* : mixed */
 	{
 		$data = \explode('.', $data);
-		if (!\is_array($data)) {
-			Log::notice('Crypt', 'DecryptUrlSafe() invalid $data');
-			return null;
-		}
 		return static::Decrypt(\array_map('MailSo\\Base\\Utils::UrlSafeBase64Decode', $data), $key);
 	}
 
@@ -127,8 +122,6 @@ abstract class Crypt
 			}
 		}
 
-		// Too much OpenSSL v3 issues ?
-//		if (\is_callable('openssl_encrypt') && OPENSSL_VERSION_NUMBER < 805306368) {
 		if (\is_callable('openssl_encrypt')) {
 			try {
 				$iv = \random_bytes(\openssl_cipher_iv_length(static::$cipher));
@@ -140,11 +133,6 @@ abstract class Crypt
 
 		$salt = \random_bytes(16);
 		return ['xxtea', $salt, static::XxteaEncrypt($data, $salt, $key)];
-/*
-		if (static::{"{$result[0]}Decrypt"}($result[2], $result[1], $key) !== $data) {
-			throw new \RuntimeException('Encrypt/Decrypt mismatch');
-		}
-*/
 	}
 
 	public static function EncryptToJSON(

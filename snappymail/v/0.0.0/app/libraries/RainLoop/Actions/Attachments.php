@@ -176,7 +176,6 @@ trait Attachments
 						$rTempResource = $oFileProvider->GetFile($oAccount, $sHash, 'wb+');
 						if (\is_resource($rTempResource)) {
 							if (-1 < \MailSo\Base\Utils::WriteStream($rResource, $rTempResource)) {
-								$sResultHash = $sHash;
 								$aValues['fileHash'] = $sHash;
 							}
 							\fclose($rTempResource);

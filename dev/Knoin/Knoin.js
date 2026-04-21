@@ -61,17 +61,11 @@ const
 							vmDom.backdrop.hidden = false;
 						};
 						vmDom.close = () => {
-//							if (vmDom.dispatchEvent(new CustomEvent('cancel', {cancelable:true}))) {
 								vmDom.backdrop.hidden = true;
 								vmDom.removeAttribute('open', null);
 								vmDom.open = false;
-//								vmDom.dispatchEvent(new CustomEvent('close'));
-//							}
 						};
 					}
-					// https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/cancel_event
-//					vmDom.addEventListener('cancel', event => (false === vm.onClose() && event.preventDefault()));
-//					vmDom.addEventListener('close', () => vm.modalVisible(false));
 
 					// show/hide popup/modal
 					// transitionend is called for each property, so we only listen to `opacity`
@@ -84,7 +78,6 @@ const
 							} else {
 								vmDom.close();
 								vm.afterHide?.();
-//								fireEvent('rl-vm-hidden', vm);
 							}
 						}
 					};
@@ -231,7 +224,6 @@ export const
 	showScreenPopup = (ViewModelClassToShow, params = []) => {
 		const vm = buildViewModel(ViewModelClassToShow);
 		if (vm) {
-			params = params || [];
 			vm.beforeShow?.(...params);
 			vm.modalVisible(true);
 			vm.onShow?.(...params);

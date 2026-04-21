@@ -160,7 +160,6 @@ abstract class HtmlUtils
 
 		// Remove all remaining data-* attributes
 		foreach ($xpath->query('//*[@*[starts-with(name(), "data-")]]') as $oElement) {
-			$sTagNameLower = \strtolower($oElement->nodeName);
 			if ($oElement->hasAttributes()) {
 				foreach ($oElement->attributes as $oAttr) {
 					if ('data-' === \substr(\strtolower($oAttr->nodeName), 0, 5)) {

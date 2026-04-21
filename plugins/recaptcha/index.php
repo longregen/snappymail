@@ -78,7 +78,7 @@ class RecaptchaPlugin extends \RainLoop\Plugins\AbstractPlugin
 	public function FilterAppDataPluginSection(bool $bAdmin, bool $bAuth, array &$aConfig) : void
 	{
 		if (!$bAdmin && !$bAuth) {
-			$aConfig['show_captcha_on_login'] = 1 > $this->getLimit();;
+			$aConfig['show_captcha_on_login'] = 1 > $this->getLimit();
 		}
 	}
 
@@ -101,7 +101,7 @@ class RecaptchaPlugin extends \RainLoop\Plugins\AbstractPlugin
 			}
 
 			if (!$bResult) {
-				$this->Manager()->Actions()->Logger()->Write('RecaptchaResponse:'.$sResult);
+				$this->Manager()->Actions()->Logger()->Write('RecaptchaResponse:' . ($bResult ? 'true' : 'false'));
 				throw new \RainLoop\Exceptions\ClientException(105);
 			}
 		}
@@ -122,9 +122,9 @@ class RecaptchaPlugin extends \RainLoop\Plugins\AbstractPlugin
 			if (0 < $iConfigLimit && $oCacher && $oCacher->IsInited()) {
 				if (false === $aResponse['Result']) {
 					$iLimit = 0;
-					$sLimut = $oCacher->Get($sKey);
-					if (\is_numeric($sLimut)) {
-						$iLimit = (int) $sLimut;
+					$sLimit = $oCacher->Get($sKey);
+					if (\is_numeric($sLimit)) {
+						$iLimit = (int) $sLimit;
 					}
 
 					$oCacher->Set($sKey, ++$iLimit);

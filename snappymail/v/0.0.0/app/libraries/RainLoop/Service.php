@@ -29,9 +29,6 @@ abstract class Service
 		\header('Referrer-Policy: no-referrer');
 		\header('X-Content-Type-Options: nosniff');
 
-		// Google FLoC, obsolete
-//		\header('Permissions-Policy: interest-cohort=()');
-
 		static::setCSP();
 
 		$sXssProtectionOptionsHeader = \trim($oConfig->Get('security', 'x_xss_protection_header', '')) ?: '1; mode=block';
@@ -147,7 +144,6 @@ abstract class Service
 				}
 			}
 
-//			if (!\SnappyMail\HTTP\SecFetch::isEntering()) {
 			\header('Content-Type: text/html; charset=utf-8');
 
 			if (!\is_dir(APP_DATA_FOLDER_PATH) || !\is_writable(APP_DATA_FOLDER_PATH)) {
@@ -195,9 +191,6 @@ abstract class Service
 				))
 			);
 
-			// https://github.com/the-djmaze/snappymail/issues/1024
-//			$oActions->verifyCacheByKey($sCacheFileName);
-
 			if ($oConfig->Get('cache', 'system_data', true)) {
 				$sResult = $oActions->Cacher()->Get($sCacheFileName);
 			} else {
@@ -232,13 +225,6 @@ abstract class Service
 			$sScriptNonce = \SnappyMail\UUID::generate();
 			static::setCSP($sScriptNonce);
 			$sResult = \str_replace('nonce=""', 'nonce="'.$sScriptNonce.'"', $sResult);
-/*
-			\preg_match('<script[^>]+>(.+)</script>', $sResult, $script);
-			$sScriptHash = 'sha256-'.\base64_encode(\hash('sha256', $script[1], true));
-			static::setCSP(null, $sScriptHash);
-*/
-			// https://github.com/the-djmaze/snappymail/issues/1024
-//			$oActions->cacheByKey($sCacheFileName);
 
 			echo $sResult;
 			unset($sResult);

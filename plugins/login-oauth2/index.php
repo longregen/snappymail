@@ -19,24 +19,14 @@ class LoginOAuth2Plugin extends \RainLoop\Plugins\AbstractPlugin
 	{
 		$this->UseLangs(true);
 		$this->addJs('LoginOAuth2.js');
-//		$this->addHook('imap.before-connect', array($this, $oImapClient, $oSettings));
-//		$this->addHook('imap.after-connect', array($this, $oImapClient, $oSettings));
 		$this->addHook('imap.before-login', 'clientLogin');
-//		$this->addHook('imap.after-login', array($this, $oImapClient, $oSettings));
-//		$this->addHook('smtp.before-connect', array($this, $oSmtpClient, $oSettings));
-//		$this->addHook('smtp.after-connect', array($this, $oSmtpClient, $oSettings));
 		$this->addHook('smtp.before-login', 'clientLogin');
-//		$this->addHook('smtp.after-login', array($this, $oSmtpClient, $oSettings));
-//		$this->addHook('sieve.before-connect', array($this, $oSieveClient, $oSettings));
-//		$this->addHook('sieve.after-connect', array($this, $oSieveClient, $oSettings));
 		$this->addHook('sieve.before-login', 'clientLogin');
-//		$this->addHook('sieve.after-login', array($this, $oSieveClient, $oSettings));
 		$this->addHook('filter.account', 'filterAccount');
 
-//		set_include_path(get_include_path() . PATH_SEPARATOR . __DIR__);
 		spl_autoload_register(function($classname){
 			if (str_starts_with($classname, 'OAuth2\\')) {
-				include_once __DIR__ . strtr("\\{$sClassName}", '\\', DIRECTORY_SEPARATOR) . '.php';
+				include_once __DIR__ . strtr("\\{$classname}", '\\', DIRECTORY_SEPARATOR) . '.php';
 			}
 		});
 	}
@@ -57,6 +47,8 @@ class LoginOAuth2Plugin extends \RainLoop\Plugins\AbstractPlugin
 	{
 		$sPassword = $oSettings->passphrase;
 		$iGatLen = \strlen(static::GMAIL_TOKENS_PREFIX);
+		$sAccessToken = '';
+		$sRefreshToken = '';
 		if ($sPassword && static::GMAIL_TOKENS_PREFIX === \substr($sPassword, 0, $iGatLen)) {
 			$aTokens = \json_decode(\substr($sPassword, $iGatLen));
 			$sAccessToken = !empty($aTokens[0]) ? $aTokens[0] : '';
@@ -131,7 +123,7 @@ class LoginOAuth2Plugin extends \RainLoop\Plugins\AbstractPlugin
 		$oActions = \RainLoop::Actions();
 		$oAccount = $oActions->getAccountFromToken(false);
 		$oDomain  = $oAccount->Domain();
-		$oLogger  = $oImapClient->Logger();
+		$oLogger  = $oActions->Logger();
 		if ($oAccount && $oActions->GetIsJson()) {
 			$oCache = $oActions->Cacher($oAccount);
 			$sCacheKey = 'tokens='.\sha1($sRefreshToken);
@@ -152,16 +144,6 @@ class LoginOAuth2Plugin extends \RainLoop\Plugins\AbstractPlugin
 					if (!empty($aRefreshTokenResponse['result']['access_token'])) {
 						$sCachedAccessToken = $aRefreshTokenResponse['result']['access_token'];
 						$this->gmailStoreTokens($oCache, $sCachedAccessToken, $sRefreshToken);
-/*
-						$oAccount->SetPassword(static::gmailTokensPassword($sCachedAccessToken, $sRefreshToken));
-						$oActions->AuthToken($oAccount);
-//						$oActions->SetUpdateAuthToken($oActions->GetSpecAuthToken());
-							$oActions->sUpdateAuthToken = $oActions->GetSpecAuthToken();
-							$sUpdateToken = $oActions->GetUpdateAuthToken();
-							if ($sUpdateToken) {
-								$aResponseItem['UpdateToken'] = $sUpdateToken;
-							}
-*/
 					}
 				}
 			}
@@ -181,11 +163,6 @@ class LoginOAuth2Plugin extends \RainLoop\Plugins\AbstractPlugin
 		$client_id = \trim($this->Config()->Get('plugin', 'client_id', ''));
 		$client_secret = \trim($this->Config()->Get('plugin', 'client_secret', ''));
 		if ($client_id && $client_secret) {
-//			include_once __DIR__ . '/OAuth2/Client.php';
-//			include_once __DIR__ . '/OAuth2/GrantType/IGrantType.php';
-//			include_once __DIR__ . '/OAuth2/GrantType/AuthorizationCode.php';
-//			include_once __DIR__ . '/OAuth2/GrantType/RefreshToken.php';
-
 			try
 			{
 				$oGMail = new \OAuth2\Client($client_id, $client_secret);

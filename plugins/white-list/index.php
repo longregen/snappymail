@@ -23,7 +23,7 @@ class WhiteListPlugin extends \RainLoop\Plugins\AbstractPlugin
 		$sWhiteList = \trim($this->Config()->Get('plugin', 'white_list', ''));
 		if (\strlen($sWhiteList) && !\RainLoop\Plugins\Helper::ValidateWildcardValues($sEmail, $sWhiteList)) {
 			$sExceptions = \trim($this->Config()->Get('plugin', 'exceptions', ''));
-			if (!\strlen($sExceptions) || \RainLoop\Plugins\Helper::ValidateWildcardValues($sEmail, $sExceptions)) {
+			if (!\strlen($sExceptions) || !\RainLoop\Plugins\Helper::ValidateWildcardValues($sEmail, $sExceptions)) {
 				throw new \RainLoop\Exceptions\ClientException(
 					$this->Config()->Get('plugin', 'auth_error', false)
 					? \RainLoop\Notifications::AuthError

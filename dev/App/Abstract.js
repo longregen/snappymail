@@ -27,9 +27,6 @@ export class AbstractApp {
 		} else {
 			rl.route.reload();
 		}
-		// this does not work due to ViewModelClass.__builded = true;
-//		rl.settings.set('Auth', false);
-//		rl.app.start();
 	}
 
 	bootstart() {
